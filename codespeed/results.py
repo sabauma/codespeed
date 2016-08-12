@@ -95,7 +95,7 @@ def save_result(data):
                 if commit_logs:
                     log = commit_logs[0]
                     rev.author = log['author']
-                    rev.date = log['date']
+                    rev.date = log['date'].replace(tzinfo=None)
                     rev.message = log['message']
 
         rev.save()
@@ -113,7 +113,7 @@ def save_result(data):
 
     r.value = data["result_value"]
     if 'result_date' in data:
-        r.date = data["result_date"]
+        r.date = data["result_date"].replace(tzinfo=None)
     elif rev.date:
         r.date = rev.date
     else:
