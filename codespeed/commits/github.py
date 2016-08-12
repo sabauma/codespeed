@@ -41,7 +41,8 @@ def retrieve_revision(commit_id, username, project, revision=None):
 
     if commit_json is None:
         try:
-            commit_json = json.load(urllib.urlopen(commit_url))
+            response = urllib.request.urlopen(commit_url).read().decode('utf-8')
+            commit_json = json.loads(response)
         except IOError as e:
             logger.exception("Unable to load %s: %s",
                              commit_url, e, exc_info=True)

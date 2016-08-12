@@ -678,7 +678,8 @@ def displaylogs(request):
     # Add commit browsing url to logs
     project = rev.branch.project
     for log in logs:
-        log['commit_browse_url'] = project.commit_browsing_url.format(**log)
+        _log = {k : canonicalize_string(v) for k, v in log.items()}
+        log['commit_browse_url'] = project.commit_browsing_url.format(**_log)
 
     return render_to_response(
         'codespeed/changes_logs.html',
@@ -688,6 +689,10 @@ def displaylogs(request):
         },
         context_instance=RequestContext(request))
 
+def canonicalize_string(s):
+    if isinstance(s, bytes):
+        return s.decode('utf-8')
+    return s
 
 @csrf_exempt
 @require_POST

@@ -62,9 +62,11 @@ def getlogs(endrev, startrev):
         raise CommitLogError("%s returned %s: %s" % (
                              " ".join(cmd), p.returncode, stderr))
     logs = []
-    for log in filter(None, stdout.split("\x1e")):
+    # print(stdout)
+    # print(type(stdout))
+    for log in filter(None, stdout.split(b"\x1e")):
         (short_commit_id, commit_id, date_t, author_name, author_email,
-            subject, body) = log.split("\x00", 7)
+            subject, body) = log.split(b"\x00", 7)
 
         date = datetime.datetime.fromtimestamp(
             int(date_t)).strftime("%Y-%m-%d %H:%M:%S")
